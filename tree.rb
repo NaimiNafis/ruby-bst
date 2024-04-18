@@ -134,14 +134,48 @@ class Tree
     result
   end
 
+  def height(value, node = @root)
+    if value < node.data
+      return height(value, node.left)
+    elsif value > node.data
+      return height(value, node.right)
+    else
+      count_height(node)
+    end
+  end
+
+  def count_height(node)
+    return -1 if node.nil?
+    binding.pry
+    left_height = count_height(node.left) # until it reach nil, it will start with -1, then +1 each return call
+    right_height = count_height(node.right)
+    [left_height, right_height].max + 1  # 1 + the greater of the heights of the left and right subtrees
+  end
+
+  def depth(value, node = @root, current_depth = 0)
+    return nil if node.nil? 
+
+    if value < node.data
+      return depth(value, node.left, current_depth + 1)
+    elsif value > node.data
+      return depth(value, node.right, current_depth + 1)
+    else
+      current_depth
+    end
+
+  end
+
+
 end
 
 tree = Tree.new([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
 # tree.insert(2)
 # tree.delete(67)
 # tree.find(4)
-tree.pretty_print
-tree.level_order { |node| puts node.data } 
-p tree.preorder 
-p tree.inorder
-p tree.postorder
+# tree.pretty_print
+# tree.level_order { |node| puts node.data } 
+# p tree.preorder 
+# p tree.inorder
+# p tree.postorder
+# p tree.depth(1)
+p tree.height(3)
