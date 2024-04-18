@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'node'
 require 'pry-byebug'
 
@@ -13,7 +15,7 @@ class Tree
     node = Node.new(array[mid])
 
     node.left = build_tree(array[0...mid]) # 0 to not included mid, ...
-    node.right = build_tree(array[mid+1..])  # mid+1 include the end, ..
+    node.right = build_tree(array[mid + 1..]) # mid+1 include the end, ..
 
     node
   end
@@ -53,7 +55,7 @@ class Tree
       elsif node.right.nil?
         temp = node.left
         node = nil
-        return temp 
+        return temp
       end
       # Case 3: Delete Node with 2 children
       temp = find_min(node.right) # find the most left from its right child
@@ -74,9 +76,9 @@ class Tree
     return nil if node.nil?
 
     if value < node.data
-      return find(value, node.left)
+      find(value, node.left)
     elsif value > node.data
-      return find(value, node.right)
+      find(value, node.right)
     else
       pretty_print(node)
     end
@@ -84,11 +86,12 @@ class Tree
 
   def level_order
     return [] unless @root
+
     queue = [@root]
     result = []
     # binding.pry
 
-    while !queue.empty?
+    until queue.empty?
       node = queue.shift
       if block_given?
         yield node
@@ -101,7 +104,7 @@ class Tree
 
     end
 
-    result unless block_given? #if no block given, use p tree.level_order to see the array
+    result unless block_given? # if no block given, use p tree.level_order to see the array
   end
 
   def preorder(node = @root, result = [])
@@ -136,9 +139,9 @@ class Tree
 
   def height(value, node = @root)
     if value < node.data
-      return height(value, node.left)
+      height(value, node.left)
     elsif value > node.data
-      return height(value, node.right)
+      height(value, node.right)
     else
       count_height(node)
     end
@@ -146,23 +149,23 @@ class Tree
 
   def count_height(node)
     return -1 if node.nil?
+
     # binding.pry
     left_height = count_height(node.left) # until it reach nil, it will start with -1, then +1 each return call
     right_height = count_height(node.right)
-    [left_height, right_height].max + 1  # 1 + the greater of the heights of the left and right subtrees
+    [left_height, right_height].max + 1 # 1 + the greater of the heights of the left and right subtrees
   end
 
   def depth(value, node = @root, current_depth = 0)
-    return nil if node.nil? 
+    return nil if node.nil?
 
     if value < node.data
-      return depth(value, node.left, current_depth + 1)
+      depth(value, node.left, current_depth + 1)
     elsif value > node.data
-      return depth(value, node.right, current_depth + 1)
+      depth(value, node.right, current_depth + 1)
     else
       current_depth
     end
-
   end
 
   def balanced?(node = @root)
@@ -171,15 +174,12 @@ class Tree
     left_height = count_height(node.left)
     right_height = count_height(node.right)
 
-    if (left_height - right_height).abs <= 1 && balanced?(node.left) && balanced?(node.right)
-      return true
-    else
-      return false
-    end
+    return true if (left_height - right_height).abs <= 1 && balanced?(node.left) && balanced?(node.right)
+
+    false
   end
 
   def rebalance
     @root = build_tree(inorder)
   end
-
 end

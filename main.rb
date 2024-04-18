@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require_relative 'node.rb'
-require_relative 'tree.rb'
+require_relative 'node'
+require_relative 'tree'
 
 puts '1. Create a binary search tree from an array of random numbers'
 random_array = Array.new(15) { rand(1..100) }
