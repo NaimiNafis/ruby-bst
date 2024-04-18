@@ -146,7 +146,7 @@ class Tree
 
   def count_height(node)
     return -1 if node.nil?
-    binding.pry
+    # binding.pry
     left_height = count_height(node.left) # until it reach nil, it will start with -1, then +1 each return call
     right_height = count_height(node.right)
     [left_height, right_height].max + 1  # 1 + the greater of the heights of the left and right subtrees
@@ -165,17 +165,21 @@ class Tree
 
   end
 
+  def balanced?(node = @root)
+    return true if node.nil?
+
+    left_height = count_height(node.left)
+    right_height = count_height(node.right)
+
+    if (left_height - right_height).abs <= 1 && balanced?(node.left) && balanced?(node.right)
+      return true
+    else
+      return false
+    end
+  end
+
+  def rebalance
+    @root = build_tree(inorder)
+  end
 
 end
-
-tree = Tree.new([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
-# tree.insert(2)
-# tree.delete(67)
-# tree.find(4)
-# tree.pretty_print
-# tree.level_order { |node| puts node.data } 
-# p tree.preorder 
-# p tree.inorder
-# p tree.postorder
-# p tree.depth(1)
-p tree.height(3)
